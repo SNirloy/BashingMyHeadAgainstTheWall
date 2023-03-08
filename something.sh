@@ -18,8 +18,14 @@ echo "Granted Permissions"
 echo "Now let's start writing"
 
 input=""
-while [[input != "done"]]; do
-
+    # Note that some syntax only exists within specific contexts
+while [[ $input != "done" ]]
+do
+    echo "What do you want to make?"
+    read input
+    case $read in
+        variable) echo "varying";;
+    esac
 done
 
 
