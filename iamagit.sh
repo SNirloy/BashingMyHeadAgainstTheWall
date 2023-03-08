@@ -2,5 +2,9 @@
 
 git pull
 git add .
-git commit -m "Auto"
+
+echo "Type your Comment"
+read comment
+
+git commit -m \"$comment\"
 git push
