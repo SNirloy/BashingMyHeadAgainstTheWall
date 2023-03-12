@@ -10,5 +10,5 @@ echo -e "#! $var\n" >> $file;
 
 chmod u+x $file;
 
-echo -e "echo "My name is $fileName;"\n" >> $file
+echo -e "echo 'My name is $fileName';\n" >> $file
 ./$file
