@@ -1,5 +1,7 @@
 #! /usr/bin/bash
 
+#To be named BashMyHeadIn.sh
+
 read -p "Enter file stem: " fileName;
 file="$fileName.sh"
 touch "$file";
@@ -12,3 +14,4 @@ chmod u+x $file;
 
 echo -e "echo 'My name is $fileName';\n" >> $file
 ./$file
+code $file
