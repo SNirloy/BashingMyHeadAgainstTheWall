@@ -1,33 +1,10 @@
 #! /usr/bin/bash
-clear
-echo "Let's start our thing!"
 
-echo "Name our new bash script"
-read fileName
-file="$fileName.sh"
-
-touch $file
-echo "Created $fileName"
-
-bin="#! $(which bash)"
-echo "Added Header"
-chmod u+x $file
-
-echo "Granted Permissions"
-
-echo "Now let's start writing"
-
-input=""
-    # Note that some syntax only exists within specific contexts
-while [[ $input != "done" ]]
+folder="Homework";
+i=1;
+read num;
+while [[ $i -le $num ]]
 do
-    echo "What do you want to make?"
-    read input
-    case $read in
-        variable) echo "varying";;
-    esac
+    $(touch "$folder/homework$i.jpeg")
+    i=$((i+1));
 done
-
-
-rm -rf "$fileName.sh"
-echo "Removed $fileName"
