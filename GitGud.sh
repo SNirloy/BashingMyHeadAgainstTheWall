@@ -16,7 +16,12 @@
 for input in $@
 do
     # echo $input
-    $(git add $input);
+    if [[ $input == "-a" ]]
+    then 
+        $(git add .);
+    else 
+        $(git add $input);
+    fi
     shift 1;
 done
 read -p "Enter Comment: " comment;
