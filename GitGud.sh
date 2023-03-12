@@ -7,6 +7,7 @@
 # version 1
 read -p "Enter Comment: " comment;
 
-$(git add .);
+git pull;
+git add .;
 git commit -m "$comment";
 git push;
