@@ -53,7 +53,11 @@ do
             git branch $2;
             git checkout $2;;
         "-m")
-            ;;
+            plus=2;
+            git checkout $2;
+            git pull origin main;
+            git merge --no-ff main && git checkout main;
+            git merge --no-ff $2;;
         "-a") 
             $(git add .);
             push=1;;
