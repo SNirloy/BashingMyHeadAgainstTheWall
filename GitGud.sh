@@ -52,6 +52,8 @@ do
             plus=2;
             git branch $2;
             git checkout $2;;
+        "-m")
+            ;;
         "-a") 
             $(git add .);
             push=1;;
