@@ -41,18 +41,28 @@ pushing(){
 
 push=0;
 
-for input in $@
+i=1;
+while [[ $i -le $# ]]
 do
-    # echo $input
-    case $input in
-        "-p") $(git pull);;
-        "-b") shift 1;
-            git branch $@;
-            git checkout $@;;
-        "-a") $(git add .);
+    plus=1;
+    case $1 in
+        "-p") 
+            git pull;;
+        "-b")
+            plus=2;
+            git branch $2;
+            git checkout $2;;
+        "-a") 
+            $(git add .);
             push=1;;
-        *) $(git add $input);
+        *) 
+            $(git add $1);
             push=1;;
     esac
-    shift 1;
+    i=$(($i + $plus));
+    shift $plus;
 done
+if [[ $push -gt 0 ]] 
+then 
+    pushing;
+fi 
