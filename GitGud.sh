@@ -52,7 +52,7 @@ do
         "-a") $(git add .);
             push=1;;
         *) $(git add $input);
-            push=1; 
+            push=1;;
     esac
     shift 1;
 done
