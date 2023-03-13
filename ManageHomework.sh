@@ -45,20 +45,17 @@ case $1 in
         ;;
     "new")
         read -p "From where?       " folder;
-        directory=$(ls -a $folder);
         read -p "What files?    " fileStem;
+        directory=$(ls -a $folder | grep "$fileStem");
         count=0;
         for file in ${directory[@]}
         do
-            if [[ $file == *$fileStem* ]]
-            then
-                part="${file##"$fileStem"}";
-                num="${part%%.***}";
+            part="${file##"$fileStem"}";
+            num="${part%%.***}";
                 # echo $num;
-                if [[ $num -ge $count ]]
-                then
-                    count=$num;
-                fi
+            if [[ $num -ge $count ]]
+            then
+                count=$num;
             fi
         done
         count=$(($count + 1));
