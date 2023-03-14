@@ -18,11 +18,11 @@ case $1 in
     "hide") # Getting each filetype in a directory && Making them Private
         read -p "What filetype to hide?     " fileType;
         read -p "From where?    " folder;
-        directory=$(ls $folder);
+        directory=$(ls $folder); #note the list
         fileType=.$fileType;
-        for file in ${directory[@]}
+        for file in ${directory[@]} #note the for each loop with an array;
         do
-            if [[ $file == *$fileType* ]]
+            if [[ $file == *$fileType* ]] #note the finding of substring
             then
                 mv -- "$folder/$file" "$folder/.$file";
             fi
@@ -37,7 +37,7 @@ case $1 in
         do
             if [[ $file == *$oldFileType* ]]
             then
-                stem="${file%%"$oldFileType"}";
+                stem="${file%%"$oldFileType"}"; #Removal of substring from the back
                 newFile="$stem$newFileType";
                 mv -- "$folder/$file" "$folder/$newFile";
             fi
@@ -46,11 +46,11 @@ case $1 in
     "new")
         read -p "From where?       " folder;
         read -p "What files?    " fileStem;
-        directory=$(ls -a $folder | grep "$fileStem");
+        directory=$(ls -a $folder | grep "$fileStem"); # Note the piping into Grep
         count=0;
         for file in ${directory[@]}
         do
-            part="${file##"$fileStem"}";
+            part="${file##"$fileStem"}"; #removal of substring from the fron
             num="${part%%.***}";
                 # echo $num;
             if [[ $num -ge $count ]]
