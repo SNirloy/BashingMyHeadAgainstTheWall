@@ -5,17 +5,15 @@
 #To be named "IAmAGit.sh"
 
 # version 1
-read -p "Enter Comment: " comment;
 
-git pull;
-git add .;
-git commit -m "$comment";
-git push;
-
-# version 2
+#show off the for loop
 for input in $@
 do
-    echo $input
+    echo input;
+done
+
+for input in $@
+do
     if [[ $input == "-a" ]]
     then 
         $(git add .);
@@ -30,7 +28,7 @@ read -p "Enter Comment: " comment;
 git commit -m "$comment";
 git push;
 
-# version 3
+# version 2
 
 pushing(){
     read -p "Enter Comment: " comment;
