@@ -5,31 +5,30 @@
 #To be named "IAmAGit.sh"
 
 # version 1
-# read -p "Enter Comment: " comment;
+read -p "Enter Comment: " comment;
 
-# git pull;
-# git add .;
-# git commit -m "$comment";
-# git push;
+git pull;
+git add .;
+git commit -m "$comment";
+git push;
 
 # version 2
-# for input in $@
-# do
-    # echo $input
-    # if [[ $input == "-p" ]]
-    # then 
-        # $(git pull);
-    # elif [[ $input == "-a" ]]
-    # then 
-        # $(git add .);
-    # else 
-        # $(git add $input);
-    # fi
-    # shift 1;
-# done
-# read -p "Enter Comment: " comment;
-# git commit -m "$comment";
-# git push;
+for input in $@
+do
+    echo $input
+    if [[ $input == "-a" ]]
+    then 
+        $(git add .);
+    elif [[ $input == "-p" ]]
+    then 
+        $(git pull);
+    else 
+        $(git add $input);
+    fi
+done
+read -p "Enter Comment: " comment;
+git commit -m "$comment";
+git push;
 
 # version 3
 
