@@ -30,6 +30,24 @@ git push;
 
 # version 2
 
+#Show 
+$1 and stuff 
+
+# This won't work so, we must introduce the shift;
+i=1;
+while [[ $i -le $# ]]
+do
+    echo $"$i";
+    i=$(($i + 1));
+done
+
+i=1;
+while [[ $i -le $# ]]
+do
+    echo $1;
+    shift 1;
+done
+
 pushing(){
     read -p "Enter Comment: " comment;
     git commit -m "$comment";
