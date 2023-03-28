@@ -18,9 +18,18 @@ Now we can add a command to test the shell script:
 ``` 
 echo "Ayyy, what up, globe?" 
 ```
-The whole script should look like this:
+File.sh should look like this:
 ```
 !# <which bash output>
 
 echo "Ayyy, what up, globe?" 
 ```
+Now, we can run the shell:
+```
+./File.sh
+```
+Haha, just joking. You can't just do that. Imagine if anyone could just write a bash script on a computer and run it. It would spell the end of every computer. You need to do the following (make sure you have the permissions to do so)
+```
+chmod u+x File.sh
+```
+Check that this worked using : ``` ll ```. It should have an x next to the shell script. 
