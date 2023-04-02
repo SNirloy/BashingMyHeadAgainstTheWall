@@ -172,6 +172,7 @@ command0 || command1 # The second command runs if and only if the first command 
 ```elif```: if the previous conditional in the block returned false, this statement's conditional test is ran. You can chain as many elifs as you want, and elifs are optional in the first place.
 ```else```: if all previous conditionals in the block were false, this statement's code is run. Not necessary for all conditional blocks.
 ```fi```: closes out a conditional chain. Always needed.
+Tabbing is **VITAL** for the conditional code.
 ```
 # Scaffold
 if [[ conditional ]]
@@ -198,6 +199,6 @@ else
     echo "Long Message"
 fi
 ```
-Tabbing is **VITAL** for the conditional code.
+### Cases
 ## Lists and Loops
 You can create a list really easily using ``` () ```
