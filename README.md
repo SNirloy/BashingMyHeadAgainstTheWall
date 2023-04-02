@@ -87,7 +87,7 @@ varB=10;
 varA=$(( $varA + 2 ));
 echo $(( $varA + $varB ));
 ```
-You can do the 4 basic operations (+, -, *, /), but not exponents.
+You can do the 5 basic operations (+, -, *, /, %), but not exponents.
 Please note, there are plenty of other ways to do math. One I just saw is piping into "bc" if that is on your system.
 ```
 echo  "9+10" | bc;
@@ -101,6 +101,103 @@ read -p "String" var1; # Using the -p flag on read allows for a prompt to be pri
 ```
 ## Conditionals
 ### Boolean Statements
-#### Working?
+A boolean statement can be created by ```[[]]```
+This creates a new context, where you get access to special syntax that allows for comparisons.
+### Boolean Operators
+#### Equal
+``` == ```: if the two strings are equal to each other. Other expansions will apply. 
+```
+var="5";
+var1="3";
+var2="2";
+[[ 5 == $var ]] # True
+[[ 1 == one ]] # False
+[[ 1 == $(( $var1 - $var2 )) ]] # True
+```
+#### Not Equal
+``` != ```: if two strings are not equal. The opposite of equal.
+```
+var="Hello";
+var1="There";
+[[ "Hello, There" != "$var, $var1" ]] # False because they match
+[[ "hello, there" != "$var, $var1" ]] # True because they don't match on account of cases
+```
+#### Comparison Operators
+``` -lt ```: if the first operand is **less than** the second
+``` -gt ```: if the first operand is **greater than** the second
+``` -lte ```: if the first operand is **less than or equal** the second
+``` -gte ```: if the first operand is **greater than or equal** the second
+These evaluate strings as numbers. If the strings are not numbers, the program will error out. 
+```
+var0=0
+var1=1
+var2=0
+
+[[ $var0 -lt $var1 ]] # True 0 < 1
+[[ $var0 -lt $var2 ]] # False 0 < 0
+[[ $var2 -gt $var1 ]] # False 0 > 1
+[[ $var1 -gt $var0 ]] # True 1 > 0
+[[ $var0 -lte $var2 ]] # True 0 <= 0
+[[ $var1 -gte $var2 ]] # True 1 >= 0
+```
+#### String Length
+```${#word}```: get the number of characters in the word (This is something called a parameter expansion, but those are REALLY numerous, and so not right now. This can exist outside of a conditional, but this is common in conditionals, so here it is.)
+Converts the word into a variable automatically.
+```
+var="qwerty";
+var1="qwertyuiopasdfghjklzxcvbnm";
+echo ${#var}; # 6
+[[ ${#var1} -lt 12 ]] # False 26 < 12
+```
+#### Boolean Operators
+These are operations used in the conditional context to connect boolean statements.
+``` && ```: AND : is true if both statements are true
+``` || ```: OR : is true if at least one statement is true
+```
+[[ true && true ]] # True
+[[ false && true ]] # False 
+[[ false && false ]] # False
+[[ true || true ]] # True
+[[ true || false ]] # True 
+[[ false || false ]] # False
+```
+Outside of the conditional context, these operators have a different meaning. 
+```
+command0 && command1 # The second command only runs if the first one is successful (exit status of 0)
+command0 || command1 # The second command runs if and only if the first command returns a non-zero status
+```
+### If Statements
+```if```: runs the associated code when the given conditional is true
+```then```: designates code to the conditional
+```elif```: if the previous conditional in the block returned false, this statement's conditional test is ran. You can chain as many elifs as you want, and elifs are optional in the first place.
+```else```: if all previous conditionals in the block were false, this statement's code is run. Not necessary for all conditional blocks.
+```fi```: closes out a conditional chain. Always needed.
+```
+# Scaffold
+if [[ conditional ]]
+then 
+    # code
+elif [[ conditional ]]
+then 
+    # code
+else
+    # code
+fi
+```
+Example
+```
+read -p "What do you want to say?" message;
+len=${#message};
+if [[ len -lte 10 ]]
+then
+    echo "Short Message"
+elif [[ len - lte 25 ]]
+then 
+    echo "Medium Message"
+else
+    echo "Long Message"
+fi
+```
+Tabbing is **VITAL** for the conditional code.
 ## Lists and Loops
 You can create a list really easily using ``` () ```
