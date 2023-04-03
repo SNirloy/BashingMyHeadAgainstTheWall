@@ -1,5 +1,65 @@
 # BashingMyHeadAgainstTheWall
 By Sadi Nirloy 
+## Code From Presentation
+```
+#! /usr/bin/bash
+
+read -p "Enter file stem: " fileName;
+file="$fileName.sh"
+touch "$file";
+
+var="$(which bash)"
+# -e for the newline
+echo -e "#! $var\n" >> $file;
+
+chmod u+x $file;
+
+echo -e "echo 'My name is $fileName';\n" >> $file
+./$file
+code $file
+```
+```
+#! /usr/bin/bash
+pushing(){
+    read -p "Enter Comment: " comment;
+    git commit -m "$comment";
+    git push;
+}
+
+push=0;
+
+i=1;
+while [[ $i -le $# ]]
+do
+    plus=1;
+    case $1 in
+        "-p") 
+            git pull;;
+        "-b")
+            plus=2;
+            git branch $2;
+            git checkout $2;;
+        "-m")
+            plus=2;
+            git checkout $2;
+            git pull origin main;
+            git merge --no-ff main && git checkout main;
+            git merge --no-ff $2;;
+        "-a") 
+            $(git add .);
+            push=1;;
+        *) 
+            $(git add $1);
+            push=1;;
+    esac
+    i=$(($i + $plus));
+    shift $plus;
+done
+if [[ $push -gt 0 ]] 
+then 
+    pushing;
+fi 
+```
 ## What is Shell and Scripting
 The shell is a program that allows the user to interact with the operating system (OS). The operating system is the level of software that interacts directly with the hardware. The shell can be programmed using a specific language based on the OS. Bourne Again Shell (Bash) is the shell scripting language of POSIX Systems, like Ubuntu and Linux. It even has implementations for MacOS and Windows. However, it is not the only scripting language out there. Bash is the sucessor of Bourne Shell, and incorporates parts of C Shell and Korn Shell. The latest Macs also use tcsh as their primary scripting language, with bash as a secondary.
 ## Starting Out With Bash
@@ -200,5 +260,214 @@ else
 fi
 ```
 ### Cases
-## Lists and Loops
-You can create a list really easily using ``` () ```
+This is a quick way of typing out a set of conditionals to test if a variable has a value using the ```case``` and ```in``` keywords. Just as ```if``` has ```fi``` to close out the block, ```case``` has ```esac```.
+```
+case $var in
+    val1)
+        code ;; # This double semicolon denotes the end of the code for the condition
+    val2)
+        code;
+        more_code;;
+    *) # This asterisk denotes a default case, since all non-empty values satisfy this condition
+        default_code;;
+```
+## Loops
+This is how to repeat some steps of code without having to retype it. 
+### While Loops
+To repeat code until a specific condition is satisfied. Useful for when you do not know how many times you need to run the code, and repeating code a number of times.
+```while```: to denote the condition of the loop. As long as the condition is true, the code will continue to run.
+```do```: to designate the start of the code that belongs to the loop
+```done```: to designate the end of the code of the loop
+```
+while [[ condition ]]
+do 
+    #code
+done
+```
+Example:
+```
+read int
+while [[ ${#int} -lt 32 ]]
+do 
+    int="$0int"
+done
+
+echo $int
+```
+
+### For Loops
+Unlike most other languages, for loops aren't used for numbers. Rather, all for loops are like enhanced for loops, and specialize in easily looping through lists of values and using them. If you are confused, please look at the Lists section.
+Uses ```for```, ```in```, ```do```, ```done```.
+```
+for var in $list
+do
+    # code
+done
+```
+## Lists 
+You can create a list really easily using ``` () ```.
+```
+list=("Hello" "There" "I Am" "Thou");
+```
+### Length of a List 
+```${#list[@]}``` is used to find the length of a list. 
+### Looping through Lists
+#### Indexing
+Normally, a value of a list can be accessed via a number, starting at 0. This is done with ```${list[]}```
+```
+list=("Hello" "There" "I Am" "Thou");
+
+echo ${list[0]}; # "Hello"
+echo ${list[1]}; # "There"
+```
+```@``` is used to represent all of the indices of the list. This is used in for loops so you needn't specify the length of a list. 
+```
+list=("Hello" "There" "I Am" "Thou");
+for var in ${list[@]}
+do
+    echo $var
+done
+```
+The above loop is an enhanced for loop, where each var represents the string in the list, where position is not really noted.
+```${!list[@]}``` can be used in order to loop through the numerical indices of the list.
+```
+list=("Hello" "There" "I Am" "Thou");
+for var in ${!list[@]}
+do
+    echo "$var: ${list[$var]}";
+done
+```
+#### Shifting
+You can also loop through a list using the ```shift``` keyword. What this does is it basically decreases all of the indices of the list by the number given, changing the values at each index. It also decreases the length of the list. 
+```
+# Looping through all vals
+while [[ ${#list[@]} -gt 0 ]]
+do
+    echo ${#list[0]};
+    shift 1;
+done
+
+# Looping through all even indexed vals
+while [[ ${#list[@]} -gte 1 ]]
+do
+    echo ${#list[0]};
+    shift 2;
+done
+
+# Looping through all odd indexed vals
+while [[ ${#list[@]} -gte 2 ]]
+do
+    echo ${#list[1]};
+    shift 2;
+done
+```
+### Loops as an expansion in strings
+Just as you can put in variables and commands into your strings, you can do the same with list literals via ```{}```. What will happen is that the string will be formed for each string at each index of list given. I **assume** that list variables can be used as well via ```${}```.
+```
+echo "Number: {0, 1, 2, 3, 4}{0, 1, 2, 3, 4}"; # This will print out 16 strings.
+```
+## Functions
+Functions can be easily created with ```(){}```. These are used to group bunches of code for easy reusability in various spots throughout the code. 
+```
+foo(){
+    #code
+}
+```
+Then the function can be run as ```foo;```, like a terminal command.
+## Command Line Arguments (and Function Arguments)
+These are given when the bash file is run. Like so:
+```./File.sh arg1 arg2 arg3```
+These values are usable with in the code. 
+### Indexing
+These arguments can be accessed with ```$num```.
+```
+# Using the above call
+echo $1; # arg1
+echo $2; #arg2
+```
+Note the intentional start at 1. $0 is always the name of the function/file being called. ALWAYS.
+#### For Looping
+```$@``` substitutes ```${list[@]}``` for a normal list. 
+```$#``` is for the number of arguments excluding $0. 
+```
+for arg in $@
+do 
+    echo $arg
+done
+```
+#### Shifting with Args
+You can loop through the args with shift, which is helpful if you need to jump arguments. However, note that $0 will always be the function name, even after shifting.
+```
+for arg in $@
+do
+    echo $1;
+    echo $0;
+    shift 1;
+done
+```
+## Bonus, but Unexplained Code
+```
+#! /usr/bin/bash
+
+folder="";
+fileStem="homework";
+case $1 in
+    "setup") 
+        read -p "What folder?       " folder;
+        mkdir $folder;
+        i=1;
+        read -p "How much homework?     " num;
+        while [[ $i -le $num ]]
+        do
+            touch $folder/$fileStem$i.txt;
+            i=$(($i + 1));
+        done
+        touch $folder/{q,w,e,r,t,y,u,i,o,p,a,s,d,f,g,h,j,k,l,z,x,c,v,b,n,m}{q,w,e,r,t,y,u,i,o,p,a,s,d,f,g,h,j,k,l,z,x,c,v,b,n,m}.jpeg;;
+    "hide") # Getting each filetype in a directory && Making them Private
+        read -p "What filetype to hide?     " fileType;
+        read -p "From where?    " folder;
+        directory=$(ls $folder); #note the list
+        fileType=.$fileType;
+        for file in ${directory[@]} #note the for each loop with an array;
+        do
+            if [[ $file == *$fileType* ]] #note the finding of substring
+            then
+                mv -- "$folder/$file" "$folder/.$file";
+            fi
+        done
+        ;;
+    "replace")
+        read -p "From where?    " folder;
+        read -p "What filetype to replace?     " oldFileType;
+        read -p "What filetype to replace with?     " newFileType;
+        directory=$(ls -a $folder);
+        for file in ${directory[@]}
+        do
+            if [[ $file == *$oldFileType* ]]
+            then
+                stem="${file%%"$oldFileType"}"; #Removal of substring from the back
+                newFile="$stem$newFileType";
+                mv -- "$folder/$file" "$folder/$newFile";
+            fi
+        done
+        ;;
+    "new")
+        read -p "From where?       " folder;
+        read -p "What files?    " fileStem;
+        directory=$(ls -a $folder | grep "$fileStem"); # Note the piping into Grep
+        count=0;
+        for file in ${directory[@]}
+        do
+            part="${file##"$fileStem"}"; #removal of substring from the fron
+            num="${part%%.***}";
+                # echo $num;
+            if [[ $num -ge $count ]]
+            then
+                count=$num;
+            fi
+        done
+        count=$(($count + 1));
+        echo $folder/$fileStem$count.txt;
+        touch $folder/$fileStem$count.txt;;
+esac
+```
